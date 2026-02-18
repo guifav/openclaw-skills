@@ -1,6 +1,6 @@
 # OpenClaw Skills — Full-Stack Developer Workflow
 
-A modular set of 7 OpenClaw skills that cover the complete development lifecycle for web applications built with Next.js App Router, Supabase, Firebase Auth, Vercel, and Cloudflare.
+A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack and 1 consolidated super-skill for the Google Cloud Platform stack.
 
 ## Skills Overview
 
@@ -14,6 +14,12 @@ A modular set of 7 OpenClaw skills that cover the complete development lifecycle
 | `cloudflare-guard` | DNS, caching, security, Workers | On demand |
 | `firebase-auth-setup` | Auth providers, hooks, user sync | Per project + on demand |
 
+### GCP Stack (alternative)
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `gcp-fullstack` | Full lifecycle — scaffold, compute (Cloud Run/Functions/App Engine), database (Firestore/Cloud SQL), auth (Firebase/Identity Platform), deploy, Cloudflare DNS/CDN/security | All stages |
+
 ## Workflow Diagram
 
 ```
@@ -26,6 +32,9 @@ Feature Development Cycle:
 Maintenance:
   supabase-ops (migrations) → test-sentinel → deploy-pilot
   cloudflare-guard (security updates, cache purge)
+
+GCP Stack (alternative — single skill handles all):
+  gcp-fullstack (scaffold) → gcp-fullstack (database setup) → gcp-fullstack (auth) → gcp-fullstack (deploy + Cloudflare)
 ```
 
 ## Installation
@@ -55,6 +64,9 @@ clawhub install test-sentinel
 clawhub install deploy-pilot
 clawhub install cloudflare-guard
 clawhub install firebase-auth-setup
+
+# GCP alternative stack
+clawhub install gcp-fullstack
 ```
 
 ---
@@ -156,6 +168,58 @@ Steps:
 7. Copy the token immediately.
 8. To get the Zone ID: go to your domain in the Cloudflare Dashboard > **Overview**. The Zone ID is in the right sidebar under **API**.
 
+### Google Cloud Platform (for gcp-fullstack skill)
+
+| Variable | Where to get it |
+|----------|----------------|
+| `GCP_PROJECT_ID` | Google Cloud Console > select project > Project ID in the dashboard header |
+| `GCP_REGION` | Your preferred region (e.g., `us-central1`, `southamerica-east1`) |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Path to a service account JSON key file |
+
+Steps:
+1. Go to https://console.cloud.google.com and sign in.
+2. Create a new project (or select an existing one). Note the **Project ID** (not the project name).
+3. Enable the required APIs:
+   ```bash
+   gcloud services enable \
+     run.googleapis.com \
+     cloudbuild.googleapis.com \
+     sqladmin.googleapis.com \
+     firestore.googleapis.com \
+     secretmanager.googleapis.com \
+     cloudfunctions.googleapis.com \
+     identitytoolkit.googleapis.com
+   ```
+4. Create a service account for CI/CD:
+   ```bash
+   gcloud iam service-accounts create openclaw-deployer \
+     --display-name="OpenClaw Deployer"
+   ```
+5. Grant necessary roles:
+   ```bash
+   PROJECT_ID=$(gcloud config get-value project)
+   SA_EMAIL="openclaw-deployer@$PROJECT_ID.iam.gserviceaccount.com"
+   for ROLE in roles/run.admin roles/cloudbuild.builds.editor roles/cloudsql.admin roles/datastore.owner roles/secretmanager.admin roles/iam.serviceAccountUser roles/storage.admin; do
+     gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_EMAIL" --role="$ROLE"
+   done
+   ```
+6. Generate a key file:
+   ```bash
+   gcloud iam service-accounts keys create ~/openclaw-deployer-key.json \
+     --iam-account=$SA_EMAIL
+   ```
+7. Set the env var:
+   ```bash
+   export GOOGLE_APPLICATION_CREDENTIALS=~/openclaw-deployer-key.json
+   ```
+8. Install the `gcloud` CLI: https://cloud.google.com/sdk/docs/install
+9. Authenticate locally:
+   ```bash
+   gcloud auth login
+   gcloud config set project $GCP_PROJECT_ID
+   gcloud config set run/region $GCP_REGION
+   ```
+
 ### GitHub CLI (gh)
 
 Not an environment variable, but required by `deploy-pilot`. Install and authenticate:
@@ -194,8 +258,13 @@ FIREBASE_PROJECT_ID=your-project-id
 FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxx@your-project.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 
-# === Vercel ===
+# === Vercel (Vercel/Supabase stack) ===
 VERCEL_TOKEN=your-vercel-token
+
+# === GCP (GCP stack) ===
+GCP_PROJECT_ID=your-gcp-project-id
+GCP_REGION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json
 
 # === Cloudflare ===
 CLOUDFLARE_API_TOKEN=your-cf-api-token
@@ -220,6 +289,7 @@ IMPORTANT: Never commit `.env.local` or any file containing real credentials. Ad
 | `CLOUDFLARE_API_TOKEN` | Every 90 days | Same process in Cloudflare Dashboard |
 | `SUPABASE_SERVICE_ROLE_KEY` | When compromised | Regenerate in Supabase Dashboard > Settings > API |
 | `FIREBASE_PRIVATE_KEY` | Every 6 months | Generate new service account key, update env var, delete old key from Firebase Console |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Every 6 months | Generate new service account key via `gcloud iam service-accounts keys create`, update file path, delete old key |
 
 ---
 
@@ -332,6 +402,13 @@ clawhub publish ./firebase-auth-setup \
   --name "Firebase Auth Setup" \
   --version 1.0.0 \
   --changelog "Initial release"
+
+# 8. GCP Fullstack (alternative stack)
+clawhub publish ./gcp-fullstack \
+  --slug gcp-fullstack \
+  --name "GCP Fullstack" \
+  --version 1.0.0 \
+  --changelog "Initial release: Cloud Run, Cloud SQL, Firestore, Firebase Auth, Identity Platform, Cloudflare, GitHub"
 ```
 
 ### What Happens After Publishing
@@ -383,3 +460,5 @@ For a team of 2-5 developers:
 - Supabase CLI — available via `npx supabase` (no global install needed)
 - Vercel CLI — available via `npx vercel` (no global install needed)
 - curl (for Cloudflare API calls) — pre-installed on macOS and Linux
+- Google Cloud SDK (`gcloud`) — https://cloud.google.com/sdk/docs/install (required for `gcp-fullstack`)
+- Docker — required for Cloud Run container builds (required for `gcp-fullstack`)
