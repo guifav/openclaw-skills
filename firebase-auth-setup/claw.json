@@ -1,0 +1,21 @@
+{
+  "name": "firebase-auth-setup",
+  "version": "1.0.0",
+  "description": "Configures Firebase Authentication — providers, security rules, custom claims, and React auth hooks",
+  "author": "guifav",
+  "license": "MIT",
+  "permissions": ["filesystem", "network"],
+  "models": ["claude-*"],
+  "tags": ["firebase", "auth", "authentication", "login", "oauth", "react"],
+  "minOpenClawVersion": "0.5.0",
+  "entry": "SKILL.md",
+  "openclaw": {
+    "requires": {
+      "bins": ["node", "npx"],
+      "env": ["NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_PROJECT_ID"]
+    },
+    "primaryEnv": "NEXT_PUBLIC_FIREBASE_API_KEY",
+    "emoji": "🔐",
+    "os": ["darwin", "linux", "win32"]
+  }
+}

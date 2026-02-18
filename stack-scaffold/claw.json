@@ -1,0 +1,21 @@
+{
+  "name": "stack-scaffold",
+  "version": "1.0.0",
+  "description": "Scaffolds a full-stack project with Next.js App Router, Supabase, Firebase Auth, Vercel, and Cloudflare",
+  "author": "guifav",
+  "license": "MIT",
+  "permissions": ["filesystem", "network"],
+  "models": ["claude-*"],
+  "tags": ["nextjs", "supabase", "firebase", "vercel", "cloudflare", "scaffold", "fullstack"],
+  "minOpenClawVersion": "0.5.0",
+  "entry": "SKILL.md",
+  "openclaw": {
+    "requires": {
+      "bins": ["node", "npx", "git"],
+      "env": ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_PROJECT_ID"]
+    },
+    "primaryEnv": "SUPABASE_URL",
+    "emoji": "🏗️",
+    "os": ["darwin", "linux", "win32"]
+  }
+}

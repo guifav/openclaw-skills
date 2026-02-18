@@ -1,0 +1,21 @@
+{
+  "name": "supabase-ops",
+  "version": "1.0.0",
+  "description": "Manages Supabase migrations, types generation, RLS policies, and edge functions",
+  "author": "guifav",
+  "license": "MIT",
+  "permissions": ["filesystem", "network"],
+  "models": ["claude-*"],
+  "tags": ["supabase", "database", "migrations", "rls", "postgres", "types"],
+  "minOpenClawVersion": "0.5.0",
+  "entry": "SKILL.md",
+  "openclaw": {
+    "requires": {
+      "bins": ["npx"],
+      "env": ["SUPABASE_URL", "SUPABASE_ANON_KEY"]
+    },
+    "primaryEnv": "SUPABASE_URL",
+    "emoji": "🗄️",
+    "os": ["darwin", "linux", "win32"]
+  }
+}
