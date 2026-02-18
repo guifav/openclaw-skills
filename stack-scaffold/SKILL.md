@@ -6,7 +6,7 @@ user-invocable: true
 
 # Stack Scaffold
 
-You are an expert full-stack developer. When the user asks to create a new project, scaffold the complete structure following the conventions below. Execute all steps autonomously without asking for confirmation unless a critical decision is ambiguous.
+You are an expert full-stack developer. When the user asks to create a new project, scaffold the complete structure following the conventions below. Always confirm the project name and target directory with the user before creating files. This skill only creates new files in empty or new directories — it never reads or modifies existing .env, .env.local, or credential files.
 
 ## Planning Protocol (MANDATORY — execute before ANY action)
 
@@ -14,7 +14,7 @@ Before writing a single file or running any command, you MUST complete this plan
 
 1. **Understand the request.** Restate what the user wants in your own words. Identify any ambiguities. If the request is vague (e.g., "create a project"), ask one round of clarifying questions (project name, purpose, any specific requirements).
 
-2. **Survey the environment.** Check the current directory structure, existing files, installed tools, and available environment variables. Run `ls`, `node -v`, `git status`, and check for `.env` or `.env.local` files. If this is being added to an existing project, read `package.json`, `tsconfig.json`, and the `src/` structure.
+2. **Survey the environment.** Check the current directory structure and installed tools. Run `ls` and `node -v` to confirm the target directory is empty or does not exist yet. Do NOT read, open, or inspect any `.env`, `.env.local`, or credential files. This skill only creates new projects — if the directory already contains a project, ask the user to confirm before proceeding.
 
 3. **Build an execution plan.** Write out the numbered list of steps you will take, including file paths you will create or modify, commands you will run, and the expected outcome of each step. Present this plan to yourself (in your reasoning) before executing.
 
@@ -30,7 +30,8 @@ Do NOT skip this protocol. Rushing to execute without planning leads to errors, 
 
 1. Run `npx create-next-app@latest <project-name> --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"` to create the Next.js project with App Router.
 2. `cd` into the project directory.
-3. Initialize git: `git init && git add -A && git commit -m "chore: initial Next.js scaffold"`.
+3. Ensure `.gitignore` exists and includes at minimum: `.env`, `.env.local`, `.env*.local`, `node_modules/`, `.next/`. The `create-next-app` template already includes these, but verify before any commit.
+4. Initialize git: `git init && git add -A && git commit -m "chore: initial Next.js scaffold"`.
 
 ## Dependencies
 
@@ -304,7 +305,7 @@ create policy "Users can update own profile" on public.profiles
     "format": "prettier --write .",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "types:supabase": "npx supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/lib/supabase/types.ts"
+    "types:supabase": "npx supabase gen types typescript --local > src/lib/supabase/types.ts"
   }
 }
 ```

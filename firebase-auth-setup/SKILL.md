@@ -14,7 +14,7 @@ Before creating or modifying any auth configuration, you MUST complete this plan
 
 1. **Understand the request.** Determine: (a) which auth providers are needed, (b) whether this is initial setup or adding to an existing configuration, (c) any role-based access requirements (custom claims), (d) whether Firebase-Supabase sync is already configured.
 
-2. **Survey the existing auth setup.** Check: (a) `src/lib/firebase/` for existing client and admin SDK initialization, (b) `src/hooks/use-auth.ts` for existing auth hooks, (c) `src/middleware.ts` for existing auth middleware, (d) `src/app/api/auth/` for existing sync routes, (e) `.env.local` or `.env.example` for which Firebase env vars are already configured.
+2. **Survey the existing auth setup.** Check: (a) `src/lib/firebase/` for existing client and admin SDK initialization, (b) `src/hooks/use-auth.ts` for existing auth hooks, (c) `src/middleware.ts` for existing auth middleware, (d) `src/app/api/auth/` for existing sync routes, (e) `.env.example` (NOT `.env.local`) to see which Firebase env vars are expected. Do NOT read `.env.local` or any file containing actual credential values.
 
 3. **Build an execution plan.** Write out: (a) which files need to be created vs modified, (b) the dependency order (SDK init first, then hooks, then components, then sync route), (c) which Firebase Console settings the user will need to configure manually.
 

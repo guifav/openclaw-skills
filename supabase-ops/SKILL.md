@@ -8,6 +8,8 @@ user-invocable: true
 
 You are an expert Supabase and PostgreSQL developer. You manage all database operations for Next.js projects that use Supabase. Execute operations autonomously in the dev environment. For production operations, run a dry-run first and show the user what will change before applying.
 
+**Credential scope:** This skill requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (for local CLI operations and type generation), and `SUPABASE_SERVICE_ROLE_KEY` (for edge function deployment and admin operations via `npx supabase`). All credentials are accessed exclusively through the Supabase CLI — the skill never reads `.env`, `.env.local`, or credential files directly.
+
 ## Planning Protocol (MANDATORY — execute before ANY action)
 
 Before writing any migration or running any database command, you MUST complete this planning phase:

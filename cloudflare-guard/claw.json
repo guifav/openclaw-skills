@@ -1,8 +1,9 @@
 {
   "name": "cloudflare-guard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Configures and manages Cloudflare DNS, caching, security rules, rate limiting, and Workers",
   "author": "guifav",
+  "homepage": "https://github.com/guifav/openclaw-skills",
   "license": "MIT",
   "permissions": ["network"],
   "models": ["claude-*"],
@@ -11,7 +12,7 @@
   "entry": "SKILL.md",
   "openclaw": {
     "requires": {
-      "bins": ["curl"],
+      "bins": ["curl", "jq"],
       "env": ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ZONE_ID"]
     },
     "primaryEnv": "CLOUDFLARE_API_TOKEN",
