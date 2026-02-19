@@ -1,6 +1,6 @@
 # OpenClaw Skills — Full-Stack Developer Workflow
 
-A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack and 1 consolidated super-skill for the Google Cloud Platform stack.
+A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, and a UI theming skill for shadcn/ui.
 
 ## Skills Overview
 
@@ -19,6 +19,12 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 | Skill | Purpose | Frequency |
 |-------|---------|-----------|
 | `gcp-fullstack` | Full lifecycle — scaffold, compute (Cloud Run/Functions/App Engine), database (Firestore/Cloud SQL), auth (Firebase/Identity Platform), deploy, Cloudflare DNS/CDN/security | All stages |
+
+### UI / Design System
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `shadcn-theme-default` | Enforces default shadcn/ui Neutral theme (black/white/gray) with OKLCH variables, Tailwind v4, and dark mode | Every component/page |
 
 ## Workflow Diagram
 
@@ -67,6 +73,9 @@ clawhub install firebase-auth-setup
 
 # GCP alternative stack
 clawhub install gcp-fullstack
+
+# UI / Design System
+clawhub install shadcn-theme-default
 ```
 
 ---
@@ -409,6 +418,13 @@ clawhub publish ./gcp-fullstack \
   --name "GCP Fullstack" \
   --version 1.0.0 \
   --changelog "Initial release: Cloud Run, Cloud SQL, Firestore, Firebase Auth, Identity Platform, Cloudflare, GitHub"
+
+# 9. shadcn Theme Default
+clawhub publish ./shadcn-theme-default \
+  --slug shadcn-theme-default \
+  --name "shadcn Theme Default" \
+  --version 1.0.0 \
+  --changelog "Initial release: Neutral theme with OKLCH variables, Tailwind v4 integration, dark mode, component patterns"
 ```
 
 ### What Happens After Publishing
