@@ -1,6 +1,6 @@
 # OpenClaw Skills — Full-Stack Developer Workflow
 
-A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, and a UI theming skill for shadcn/ui.
+A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, a UI theming skill for shadcn/ui, a web scraping/content comprehension skill, pre-production QA gate skills for both stacks, and an integration architecture skill for multi-app monorepos.
 
 ## Skills Overview
 
@@ -10,6 +10,7 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 | `supabase-ops` | DB migrations, RLS, types, edge functions | Every schema change |
 | `feature-forge` | Build complete features from descriptions | Daily |
 | `test-sentinel` | Write/run tests, lint, auto-fix | Before every merge |
+| `qa-gate-vercel` | Pre-production validation gate — test plans, API/UI/toast/auth/LLM quality validation, go/no-go reports | Before every production deploy |
 | `deploy-pilot` | Build validation, deploy, monitoring | Every deploy |
 | `cloudflare-guard` | DNS, caching, security, Workers | On demand |
 | `firebase-auth-setup` | Auth providers, hooks, user sync | Per project + on demand |
@@ -19,12 +20,25 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 | Skill | Purpose | Frequency |
 |-------|---------|-----------|
 | `gcp-fullstack` | Full lifecycle — scaffold, compute (Cloud Run/Functions/App Engine), database (Firestore/Cloud SQL), auth (Firebase/Identity Platform), deploy, Cloudflare DNS/CDN/security | All stages |
+| `qa-gate-gcp` | Pre-production validation gate for GCP — test plans, API/UI/toast/auth/LLM quality, infra health (Cloud Run, Cloud SQL, Firestore rules, Secret Manager), go/no-go reports | Before every production deploy |
 
 ### UI / Design System
 
 | Skill | Purpose | Frequency |
 |-------|---------|-----------|
 | `shadcn-theme-default` | Enforces default shadcn/ui Neutral theme (black/white/gray) with OKLCH variables, Tailwind v4, and dark mode | Every component/page |
+
+### Data / Content Extraction
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `web-scraper` | Multi-strategy web scraping with cascade fallback (static/Playwright/Scrapy), news detection, boilerplate removal (trafilatura), metadata extraction, and LLM entity extraction via OpenRouter | On demand |
+
+### Integration / Multi-App
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `interop-forge` | Integration architect for multi-app monorepos — shared contracts (@repo/contracts), API-first with OpenAPI, cross-app JWT auth, auto-generated typed SDKs, full MCP server per app | Per project + on demand |
 
 ## Workflow Diagram
 
@@ -33,14 +47,21 @@ New Project:
   stack-scaffold → firebase-auth-setup → cloudflare-guard → deploy-pilot (initial deploy)
 
 Feature Development Cycle:
-  feature-forge → supabase-ops (if DB changes) → test-sentinel → deploy-pilot
+  feature-forge → supabase-ops (if DB changes) → test-sentinel → qa-gate-vercel (pre-prod) → deploy-pilot
 
 Maintenance:
   supabase-ops (migrations) → test-sentinel → deploy-pilot
   cloudflare-guard (security updates, cache purge)
 
 GCP Stack (alternative — single skill handles all):
-  gcp-fullstack (scaffold) → gcp-fullstack (database setup) → gcp-fullstack (auth) → gcp-fullstack (deploy + Cloudflare)
+  gcp-fullstack (scaffold) → gcp-fullstack (database setup) → gcp-fullstack (auth) → qa-gate-gcp (pre-prod) → gcp-fullstack (deploy + Cloudflare)
+
+Web Scraping Pipeline:
+  web-scraper (detect article) → web-scraper (extract content) → web-scraper (clean + metadata) → web-scraper (LLM entities)
+
+Multi-App Integration (interop-forge handles all):
+  interop-forge (monorepo setup) → interop-forge (shared contracts) → interop-forge (OpenAPI specs)
+  → interop-forge (SDK generation) → interop-forge (cross-app auth) → interop-forge (MCP servers)
 ```
 
 ## Installation
@@ -71,11 +92,23 @@ clawhub install deploy-pilot
 clawhub install cloudflare-guard
 clawhub install firebase-auth-setup
 
+# QA Gate (Vercel/Supabase stack)
+clawhub install qa-gate-vercel
+
 # GCP alternative stack
 clawhub install gcp-fullstack
 
+# QA Gate (GCP stack)
+clawhub install qa-gate-gcp
+
 # UI / Design System
 clawhub install shadcn-theme-default
+
+# Data / Content Extraction
+clawhub install web-scraper
+
+# Integration / Multi-App
+clawhub install interop-forge
 ```
 
 ---
@@ -229,6 +262,20 @@ Steps:
    gcloud config set run/region $GCP_REGION
    ```
 
+### OpenRouter (for web-scraper LLM entity extraction)
+
+| Variable | Where to get it |
+|----------|----------------|
+| `OPENROUTER_API_KEY` | OpenRouter Dashboard > Keys |
+
+Steps:
+1. Go to https://openrouter.ai and sign in (or create an account).
+2. Navigate to **Keys** (https://openrouter.ai/keys).
+3. Click **Create Key**.
+4. Give it a name (e.g., `openclaw-scraper`) and set usage limits if desired.
+5. Copy the key immediately — it starts with `sk-or-`.
+6. The web-scraper skill uses this key in generated Python scripts for LLM entity extraction (Stage 5). Models used: `google/gemini-flash-1.5` or similar low-cost models for structured extraction.
+
 ### GitHub CLI (gh)
 
 Not an environment variable, but required by `deploy-pilot`. Install and authenticate:
@@ -278,6 +325,9 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json
 # === Cloudflare ===
 CLOUDFLARE_API_TOKEN=your-cf-api-token
 CLOUDFLARE_ZONE_ID=your-zone-id
+
+# === OpenRouter (web-scraper LLM entity extraction) ===
+OPENROUTER_API_KEY=sk-or-...
 ```
 
 ### Where to Store These
@@ -299,6 +349,7 @@ IMPORTANT: Never commit `.env.local` or any file containing real credentials. Ad
 | `SUPABASE_SERVICE_ROLE_KEY` | When compromised | Regenerate in Supabase Dashboard > Settings > API |
 | `FIREBASE_PRIVATE_KEY` | Every 6 months | Generate new service account key, update env var, delete old key from Firebase Console |
 | `GOOGLE_APPLICATION_CREDENTIALS` | Every 6 months | Generate new service account key via `gcloud iam service-accounts keys create`, update file path, delete old key |
+| `OPENROUTER_API_KEY` | When compromised or on billing cycle | Create new key in OpenRouter Dashboard, update env var, delete old key |
 
 ---
 
@@ -425,6 +476,34 @@ clawhub publish ./shadcn-theme-default \
   --name "shadcn Theme Default" \
   --version 1.0.0 \
   --changelog "Initial release: Neutral theme with OKLCH variables, Tailwind v4 integration, dark mode, component patterns"
+
+# 10. Web Scraper
+clawhub publish ./web-scraper \
+  --slug web-scraper \
+  --name "Web Scraper" \
+  --version 1.0.0 \
+  --changelog "Initial release: multi-strategy cascade (static/Playwright/Scrapy), news detection, trafilatura cleaning, metadata extraction, LLM entity extraction via OpenRouter"
+
+# 11. QA Gate Vercel
+clawhub publish ./qa-gate-vercel \
+  --slug qa-gate-vercel \
+  --name "QA Gate Vercel" \
+  --version 1.0.0 \
+  --changelog "Initial release: pre-production validation for Vercel/Supabase/Firebase — test plans, API/UI/toast/auth/LLM quality, go/no-go reports"
+
+# 12. QA Gate GCP
+clawhub publish ./qa-gate-gcp \
+  --slug qa-gate-gcp \
+  --name "QA Gate GCP" \
+  --version 1.0.0 \
+  --changelog "Initial release: pre-production validation for GCP — test plans, API/UI/toast/auth/LLM quality, Cloud Run/SQL/Firestore/Secret Manager health, go/no-go reports"
+
+# 13. Interop Forge
+clawhub publish ./interop-forge \
+  --slug interop-forge \
+  --name "Interop Forge" \
+  --version 1.0.0 \
+  --changelog "Initial release: monorepo integration — shared contracts, OpenAPI specs, typed SDKs, cross-app JWT auth, full MCP server scaffolding per app"
 ```
 
 ### What Happens After Publishing
@@ -478,3 +557,6 @@ For a team of 2-5 developers:
 - curl (for Cloudflare API calls) — pre-installed on macOS and Linux
 - Google Cloud SDK (`gcloud`) — https://cloud.google.com/sdk/docs/install (required for `gcp-fullstack`)
 - Docker — required for Cloud Run container builds (required for `gcp-fullstack`)
+- pnpm — `npm install -g pnpm` (required for `interop-forge` monorepo management)
+- Python 3.10+ with pip (required for `web-scraper`)
+- Playwright browsers — installed via `npx playwright install` (required for `web-scraper` JS-rendered pages)
