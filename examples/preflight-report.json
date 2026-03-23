@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-03-22T09:00:00Z",
+  "target_stack": "vercel",
+  "summary": {
+    "total": 15,
+    "passed": 13,
+    "failed": 1,
+    "warnings": 1
+  },
+  "checks": [
+    { "check": "node", "category": "binary", "status": "pass", "detail": "v20.11.0", "required_by": ["stack-scaffold", "feature-forge", "test-sentinel", "deploy-pilot"] },
+    { "check": "npx", "category": "binary", "status": "pass", "detail": "10.2.4", "required_by": ["stack-scaffold", "feature-forge", "test-sentinel", "deploy-pilot"] },
+    { "check": "git", "category": "binary", "status": "pass", "detail": "2.43.0", "required_by": ["stack-scaffold", "deploy-pilot"] },
+    { "check": "gh", "category": "binary", "status": "pass", "detail": "2.44.1", "required_by": ["deploy-pilot"] },
+    { "check": "curl", "category": "binary", "status": "pass", "detail": "8.4.0", "required_by": ["cloudflare-guard"] },
+    { "check": "jq", "category": "binary", "status": "warning", "detail": "not found (optional)", "required_by": ["cloudflare-guard"], "fix": "Install: brew install jq (macOS) or sudo apt install jq (Linux)" },
+    { "check": "NEXT_PUBLIC_SUPABASE_URL", "category": "env", "status": "pass", "detail": "set (https://...supabase.co)", "required_by": ["stack-scaffold", "supabase-ops"] },
+    { "check": "NEXT_PUBLIC_SUPABASE_ANON_KEY", "category": "env", "status": "pass", "detail": "set (eyJhbG...)", "required_by": ["stack-scaffold", "supabase-ops"] },
+    { "check": "VERCEL_TOKEN", "category": "env", "status": "pass", "detail": "set", "required_by": ["deploy-pilot"] },
+    { "check": "CLOUDFLARE_API_TOKEN", "category": "env", "status": "fail", "detail": "not set", "required_by": ["cloudflare-guard"], "fix": "Get from: Cloudflare Dashboard > My Profile > API Tokens" }
+  ],
+  "blocked_skills": ["cloudflare-guard"],
+  "ready_skills": ["stack-scaffold", "supabase-ops", "feature-forge", "test-sentinel", "deploy-pilot", "firebase-auth-setup"],
+  "recommendations": [
+    "Set CLOUDFLARE_API_TOKEN to enable cloudflare-guard skill",
+    "Install jq for better JSON formatting in cloudflare-guard output"
+  ]
+}

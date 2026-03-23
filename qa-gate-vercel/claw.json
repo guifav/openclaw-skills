@@ -24,6 +24,10 @@
   ],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["stack-scaffold"],
+    "recommended": ["test-sentinel"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git"],

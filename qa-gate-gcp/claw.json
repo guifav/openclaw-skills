@@ -27,6 +27,9 @@
   ],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["gcp-fullstack"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git", "gcloud"],

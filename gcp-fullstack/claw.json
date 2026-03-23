@@ -28,6 +28,9 @@
   ],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "recommended": ["qa-gate-gcp"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git", "gh", "gcloud", "docker", "curl", "jq"],

@@ -10,6 +10,10 @@
   "tags": ["deploy", "vercel", "github", "ci-cd", "production", "preview"],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["stack-scaffold"],
+    "recommended": ["test-sentinel", "qa-gate-vercel"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git", "gh", "curl", "jq"],

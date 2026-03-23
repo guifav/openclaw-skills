@@ -25,7 +25,7 @@
   "entry": "SKILL.md",
   "openclaw": {
     "requires": {
-      "bins": ["node", "npx", "pnpm", "git"],
+      "bins": ["node", "npx", "git"],
       "env": []
     },
     "emoji": "🔗",

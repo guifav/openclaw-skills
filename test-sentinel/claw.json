@@ -10,6 +10,9 @@
   "tags": ["testing", "vitest", "playwright", "eslint", "qa", "ci"],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "recommended": ["feature-forge"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx"]

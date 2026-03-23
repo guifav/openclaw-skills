@@ -21,6 +21,9 @@
   ],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["stack-scaffold"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx"],

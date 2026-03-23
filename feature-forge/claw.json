@@ -10,6 +10,10 @@
   "tags": ["nextjs", "react", "feature", "fullstack", "codegen", "supabase", "app-router"],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["stack-scaffold"],
+    "recommended": ["supabase-ops", "test-sentinel"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git"],

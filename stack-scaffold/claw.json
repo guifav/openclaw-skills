@@ -10,6 +10,9 @@
   "tags": ["nextjs", "supabase", "firebase", "vercel", "cloudflare", "scaffold", "fullstack"],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "recommended": ["firebase-auth-setup", "shadcn-theme-default", "cloudflare-guard", "deploy-pilot"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["node", "npx", "git"],

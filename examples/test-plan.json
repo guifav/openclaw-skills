@@ -1,0 +1,73 @@
+{
+  "project": "my-saas-app",
+  "generated_at": "2026-03-22T10:30:00Z",
+  "skill": "qa-gate-vercel",
+  "stack": "vercel-supabase",
+  "test_suites": [
+    {
+      "name": "API Endpoint Validation",
+      "priority": "critical",
+      "tests": [
+        {
+          "id": "api-001",
+          "name": "Health endpoint returns 200",
+          "endpoint": "/api/health",
+          "method": "GET",
+          "expected_status": 200,
+          "expected_body": { "status": "ok" }
+        },
+        {
+          "id": "api-002",
+          "name": "Auth sync endpoint rejects unauthenticated",
+          "endpoint": "/api/auth/sync",
+          "method": "POST",
+          "headers": {},
+          "expected_status": 401
+        },
+        {
+          "id": "api-003",
+          "name": "Protected endpoint requires valid token",
+          "endpoint": "/api/dashboard/stats",
+          "method": "GET",
+          "headers": { "Authorization": "Bearer <invalid>" },
+          "expected_status": 401
+        }
+      ]
+    },
+    {
+      "name": "UI Component Validation",
+      "priority": "high",
+      "tests": [
+        {
+          "id": "ui-001",
+          "name": "Login page renders sign-in buttons",
+          "page": "/login",
+          "assertions": [
+            "page.getByText('Continue with Google').isVisible()",
+            "page.getByText('Continue with Apple').isVisible()"
+          ]
+        },
+        {
+          "id": "ui-002",
+          "name": "Dashboard redirects unauthenticated users",
+          "page": "/dashboard",
+          "expected_redirect": "/login"
+        }
+      ]
+    },
+    {
+      "name": "Auth Flow Validation",
+      "priority": "critical",
+      "tests": [
+        {
+          "id": "auth-001",
+          "name": "Firebase-Supabase sync creates profile",
+          "flow": "sign-in → sync → check profiles table",
+          "expected": "Profile exists with matching Firebase UID"
+        }
+      ]
+    }
+  ],
+  "total_tests": 6,
+  "estimated_duration_seconds": 45
+}

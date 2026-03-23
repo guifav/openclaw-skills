@@ -25,9 +25,8 @@
   "openclaw": {
     "requires": {
       "bins": ["python3", "pip", "npx"],
-      "env": ["OPENROUTER_API_KEY"]
+      "env": []
     },
-    "primaryEnv": "OPENROUTER_API_KEY",
     "emoji": "🕷️",
     "os": ["darwin", "linux", "win32"]
   }

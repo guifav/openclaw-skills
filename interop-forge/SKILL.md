@@ -34,6 +34,28 @@ Do NOT skip this protocol. Rushing integration architecture leads to circular de
 
 ---
 
+## Package Manager Compatibility
+
+This skill defaults to **pnpm** for monorepo workspace management (recommended for performance and strict dependency resolution). However, it supports alternative package managers.
+
+**Auto-detection order:**
+1. Check for `pnpm-lock.yaml` → use `pnpm`
+2. Check for `yarn.lock` → use `yarn`
+3. Check for `package-lock.json` → use `npm`
+4. No lockfile found → check if `pnpm` is installed (`which pnpm`), otherwise fall back to `npm`
+
+**Workspace configuration by package manager:**
+
+| Manager | Workspace config | Install command | Run command |
+|---------|-----------------|-----------------|-------------|
+| pnpm | `pnpm-workspace.yaml` | `pnpm install` | `pnpm --filter <pkg> run <script>` |
+| yarn (berry) | `package.json` → `"workspaces"` | `yarn install` | `yarn workspace <pkg> run <script>` |
+| npm | `package.json` → `"workspaces"` | `npm install` | `npm -w <pkg> run <script>` |
+
+When generating monorepo configurations, the agent MUST detect the user's package manager first and adapt all commands accordingly. If the user explicitly requests a specific package manager, use that regardless of auto-detection.
+
+---
+
 ## Part 1 — Monorepo Structure
 
 ### Expected Directory Layout

@@ -1,0 +1,65 @@
+{
+  "project": "my-saas-app",
+  "generated_at": "2026-03-22T11:00:00Z",
+  "skill": "qa-gate-vercel",
+  "environment": "preview",
+  "target_environment": "production",
+  "verdict": "GO",
+  "confidence": 0.95,
+  "summary": "All critical checks passed. 1 warning on performance budget (non-blocking). Ready for production deployment.",
+  "categories": {
+    "build": {
+      "status": "pass",
+      "checks": [
+        { "name": "TypeScript compilation", "status": "pass", "detail": "0 errors" },
+        { "name": "ESLint", "status": "pass", "detail": "0 errors, 2 warnings" },
+        { "name": "Next.js build", "status": "pass", "detail": "Build completed in 23s" }
+      ]
+    },
+    "tests": {
+      "status": "pass",
+      "checks": [
+        { "name": "Unit tests (Vitest)", "status": "pass", "detail": "47/47 passed" },
+        { "name": "E2E tests (Playwright)", "status": "pass", "detail": "12/12 passed" }
+      ]
+    },
+    "api": {
+      "status": "pass",
+      "checks": [
+        { "name": "Health endpoint", "status": "pass", "detail": "200 OK, 45ms" },
+        { "name": "Auth endpoints", "status": "pass", "detail": "All 3 endpoints respond correctly" },
+        { "name": "Protected routes reject unauthenticated", "status": "pass" }
+      ]
+    },
+    "ui": {
+      "status": "pass",
+      "checks": [
+        { "name": "Login page renders", "status": "pass" },
+        { "name": "Dashboard accessible after auth", "status": "pass" },
+        { "name": "Dark mode toggle works", "status": "pass" }
+      ]
+    },
+    "performance": {
+      "status": "warning",
+      "checks": [
+        { "name": "Largest Contentful Paint", "status": "warning", "detail": "2.8s (budget: 2.5s)", "blocking": false },
+        { "name": "First Input Delay", "status": "pass", "detail": "45ms" },
+        { "name": "Cumulative Layout Shift", "status": "pass", "detail": "0.02" }
+      ]
+    },
+    "security": {
+      "status": "pass",
+      "checks": [
+        { "name": "No exposed env vars in client bundle", "status": "pass" },
+        { "name": "RLS enabled on all tables", "status": "pass" },
+        { "name": "HTTPS enforced", "status": "pass" }
+      ]
+    }
+  },
+  "blocking_issues": [],
+  "warnings": [
+    "LCP is 2.8s, slightly above 2.5s budget. Consider optimizing hero image or implementing lazy loading."
+  ],
+  "deploy_command": "git push origin main",
+  "rollback_command": "npx vercel promote <previous-deployment-id> --token $VERCEL_TOKEN"
+}

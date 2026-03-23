@@ -10,6 +10,9 @@
   "tags": ["supabase", "database", "migrations", "rls", "postgres", "types"],
   "minOpenClawVersion": "0.5.0",
   "entry": "SKILL.md",
+  "skillDependencies": {
+    "requires": ["stack-scaffold"]
+  },
   "openclaw": {
     "requires": {
       "bins": ["npx", "git"],

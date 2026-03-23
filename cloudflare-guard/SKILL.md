@@ -26,6 +26,17 @@ Before making any API call to Cloudflare, you MUST complete this planning phase:
 
 Do NOT skip this protocol. A wrong DNS record or SSL setting can take the entire site offline.
 
+## Platform Compatibility
+
+This skill uses `curl` and `jq` for Cloudflare API interactions. On Windows (without WSL), `jq` may not be available.
+
+**Alternatives when `jq` is not installed:**
+- Use `python3 -m json.tool` for basic JSON formatting: `curl ... | python3 -m json.tool`
+- Use `npx json` (from the `json` npm package): `curl ... | npx json`
+- Use PowerShell's `ConvertFrom-Json`: `(curl ... | ConvertFrom-Json)`
+
+Before executing any commands, check if `jq` is available by running `which jq || command -v jq`. If not found and on Windows, fall back to one of the alternatives above. All examples in this skill use `jq` syntax, but the agent should substitute the appropriate alternative for the user's platform.
+
 ## API Base
 
 All requests use:

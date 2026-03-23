@@ -679,6 +679,11 @@ This is the complete `globals.css` file for a project using the default Neutral 
 
 6. **Sidebar uses its own token set.** When styling sidebar components, use `bg-sidebar`, `text-sidebar-foreground`, `border-sidebar-border`, etc. — not the generic tokens.
 
-7. **Detect Tailwind version.** Check `package.json` for Tailwind version. If v4+, use OKLCH variables with `@theme inline`. If v3, use HSL variables with `tailwind.config.ts` extension.
+7. **Detect Tailwind version.** Before applying any theme, run this detection sequence:
+   - Check `package.json` for `tailwindcss` version: `cat package.json | grep tailwindcss`
+   - If version starts with `4.` → use OKLCH variables with `@theme inline` in `globals.css`
+   - If version starts with `3.` → use HSL variables with `tailwind.config.ts` extension
+   - If version is ambiguous, check for `@theme` directive in existing CSS files (indicates v4) or `tailwind.config.ts` with `hsl(var(--...))` patterns (indicates v3)
+   - **Never mix OKLCH and HSL** — applying v4 OKLCH variables to a v3 project will break all colors
 
 8. **Installing new components.** Use `npx shadcn@latest add <component>`. The CLI respects `components.json` and generates components with the correct theme tokens.

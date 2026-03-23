@@ -313,3 +313,14 @@ create policy "Users can update own profile" on public.profiles
 4. Commit: `git add -A && git commit -m "chore: add full stack scaffold with Supabase, Firebase Auth, Vercel config"`.
 
 5. Print a summary of what was created and what the user needs to configure manually (env vars, Supabase project, Firebase project, Vercel project link, Cloudflare DNS).
+
+## Next Steps — Recommended Skill Sequence
+
+After scaffolding is complete, run the following skills in order:
+
+1. **`firebase-auth-setup`** — Configures auth providers (Google, Apple, email/password), creates the auth hook, auth provider component, server-side token verification, and the Firebase-Supabase user sync route. This builds on the Firebase client/admin SDK files created by this scaffold.
+2. **`shadcn-theme-default`** — Applies the default shadcn/ui Neutral theme with OKLCH CSS variables and dark mode support.
+3. **`cloudflare-guard`** — Sets up DNS, SSL, rate limiting, and caching for your domain on Cloudflare.
+4. **`deploy-pilot`** — Runs the pre-deploy checklist and pushes the initial deployment to Vercel.
+
+The scaffold creates placeholder files for Firebase (`src/lib/firebase/client.ts`, `src/lib/firebase/admin.ts`) and a basic auth middleware (`src/middleware.ts`). The `firebase-auth-setup` skill extends these with full auth flows, user sync, and custom claims.

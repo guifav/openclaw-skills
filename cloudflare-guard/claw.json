@@ -12,7 +12,7 @@
   "entry": "SKILL.md",
   "openclaw": {
     "requires": {
-      "bins": ["curl", "jq"],
+      "bins": ["curl"],
       "env": ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ZONE_ID"]
     },
     "primaryEnv": "CLOUDFLARE_API_TOKEN",
