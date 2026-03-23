@@ -1,6 +1,6 @@
 # OpenClaw Skills — Full-Stack Developer Workflow
 
-A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, a UI theming skill for shadcn/ui, a web scraping/content comprehension skill, pre-production QA gate skills for both stacks, and an integration architecture skill for multi-app monorepos.
+A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, a UI theming skill for shadcn/ui, a web scraping/content comprehension skill, pre-production QA gate skills for both stacks, an integration architecture skill for multi-app monorepos, an operations accountability tracker, and a pre-flight environment validator.
 
 ## Skills Overview
 
@@ -40,6 +40,13 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 |-------|---------|-----------|
 | `interop-forge` | Integration architect for multi-app monorepos — shared contracts (@repo/contracts), API-first with OpenAPI, cross-app JWT auth, auto-generated typed SDKs, full MCP server per app | Per project + on demand |
 
+### Operations / Reliability
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `accountability` | Tracks follow-ups for every action with a future outcome (deploys, crons, fixes, configs). Structured FOLLOWUPS.md, priority-based escalation (P0/P1/P2), auto-archival of resolved items | Every deploy, cron, fix, config change |
+| `preflight-check` | Pre-flight environment validator — checks binaries, env vars, and service connectivity before running other skills | Before first use of a stack
+
 ## Workflow Diagram
 
 ```
@@ -62,6 +69,10 @@ Web Scraping Pipeline:
 Multi-App Integration (interop-forge handles all):
   interop-forge (monorepo setup) → interop-forge (shared contracts) → interop-forge (OpenAPI specs)
   → interop-forge (SDK generation) → interop-forge (cross-app auth) → interop-forge (MCP servers)
+
+Operations Accountability (runs alongside any workflow):
+  any action (deploy/cron/fix/config) → accountability (register follow-up in FOLLOWUPS.md)
+  → session start (check pending items) → verify or escalate → archive when done
 ```
 
 ## When to Use GCP vs Vercel Stack
@@ -143,6 +154,10 @@ clawhub install web-scraper
 
 # Integration / Multi-App
 clawhub install interop-forge
+
+# Operations / Reliability
+clawhub install accountability
+clawhub install preflight-check
 ```
 
 ---
@@ -406,6 +421,7 @@ These skills are configured for maximum autonomy with a mandatory planning phase
   - `deploy-pilot` sends deployment summaries before pushing to prod.
   - `supabase-ops` runs dry-runs before applying prod migrations.
   - `cloudflare-guard` logs all API calls for audit.
+  - `accountability` registers a follow-up for every deploy, cron, fix, or config change — nothing slips through the cracks.
 
 ---
 
@@ -441,8 +457,8 @@ For each skill, run:
 clawhub publish ./stack-scaffold \
   --slug stack-scaffold \
   --name "Stack Scaffold" \
-  --version 1.0.0 \
-  --changelog "Initial release: Next.js + Supabase + Firebase Auth + Vercel + Cloudflare scaffolding"
+  --version 1.1.0 \
+  --changelog "Next Steps section, Turbopack dev server, improved Planning Protocol"
 ```
 
 The full list of publish commands:
@@ -452,57 +468,57 @@ The full list of publish commands:
 clawhub publish ./stack-scaffold \
   --slug stack-scaffold \
   --name "Stack Scaffold" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Next Steps section, Turbopack dev server, improved Planning Protocol"
 
 # 2. Supabase Ops
 clawhub publish ./supabase-ops \
   --slug supabase-ops \
   --name "Supabase Ops" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Dry-run mode for production migrations, improved RLS templates"
 
 # 3. Feature Forge
 clawhub publish ./feature-forge \
   --slug feature-forge \
   --name "Feature Forge" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Integration guidance with deploy-pilot, improved feature decomposition"
 
 # 4. Test Sentinel
 clawhub publish ./test-sentinel \
   --slug test-sentinel \
   --name "Test Sentinel" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Improved async server component test patterns, better error diagnostics"
 
 # 5. Deploy Pilot
 clawhub publish ./deploy-pilot \
   --slug deploy-pilot \
   --name "Deploy Pilot" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Integration with feature-forge, improved rollback procedures"
 
 # 6. Cloudflare Guard
 clawhub publish ./cloudflare-guard \
   --slug cloudflare-guard \
   --name "Cloudflare Guard" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Platform compatibility section with jq alternatives for Windows"
 
 # 7. Firebase Auth Setup
 clawhub publish ./firebase-auth-setup \
   --slug firebase-auth-setup \
   --name "Firebase Auth Setup" \
-  --version 1.0.0 \
-  --changelog "Initial release"
+  --version 1.1.0 \
+  --changelog "Clearer integration with stack-scaffold, security checklist"
 
 # 8. GCP Fullstack (alternative stack)
 clawhub publish ./gcp-fullstack \
   --slug gcp-fullstack \
   --name "GCP Fullstack" \
-  --version 1.0.0 \
-  --changelog "Initial release: Cloud Run, Cloud SQL, Firestore, Firebase Auth, Identity Platform, Cloudflare, GitHub"
+  --version 2.0.0 \
+  --changelog "Major rewrite: consolidated lifecycle, modularized docs, migration guide from v1.x, service selection decision trees"
 
 # 9. shadcn Theme Default
 clawhub publish ./shadcn-theme-default \
@@ -538,6 +554,20 @@ clawhub publish ./interop-forge \
   --name "Interop Forge" \
   --version 1.0.0 \
   --changelog "Initial release: monorepo integration — shared contracts, OpenAPI specs, typed SDKs, cross-app JWT auth, full MCP server scaffolding per app"
+
+# 14. Accountability
+clawhub publish ./accountability \
+  --slug accountability \
+  --name "Accountability" \
+  --version 1.0.0 \
+  --changelog "Initial release: operations follow-up tracker — structured FOLLOWUPS.md, priority escalation, auto-archival, session start protocol"
+
+# 15. Preflight Check
+clawhub publish ./preflight-check \
+  --slug preflight-check \
+  --name "Preflight Check" \
+  --version 1.0.0 \
+  --changelog "Initial release: environment validator — binary checks, env var validation, service connectivity, stack-specific profiles"
 ```
 
 ### What Happens After Publishing
