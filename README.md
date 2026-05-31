@@ -47,6 +47,12 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 | `accountability` | Tracks follow-ups for every action with a future outcome (deploys, crons, fixes, configs). Structured FOLLOWUPS.md, priority-based escalation (P0/P1/P2), auto-archival of resolved items | Every deploy, cron, fix, config change |
 | `preflight-check` | Pre-flight environment validator — checks binaries, env vars, and service connectivity before running other skills | Before first use of a stack
 
+### Code Review / Quality Gate
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `pr-review` | Senior-engineer PR review — advisor-vs-operator stance, live-head pinning, five universal gates, and a risk router into 17 load-on-demand deep-check catalogs (SQL, concurrency/state, RBAC, error observability, AI prompts, contracts/types, UI, data pipelines, infra rollout, tests, docs) plus an anonymized lessons ledger. P0–P3 severity, output in your team's language. | Before every approve / merge / sign-off |
+
 ## Workflow Diagram
 
 ```
