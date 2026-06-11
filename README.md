@@ -1,6 +1,6 @@
 # OpenClaw Skills — Full-Stack Developer Workflow
 
-A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, a UI theming skill for shadcn/ui, a web scraping/content comprehension skill, pre-production QA gate skills for both stacks, an integration architecture skill for multi-app monorepos, an operations accountability tracker, and a pre-flight environment validator.
+A modular set of OpenClaw skills that cover the complete development lifecycle for web applications. Includes 7 skills for the Vercel/Supabase stack, 1 consolidated super-skill for the Google Cloud Platform stack, a UI theming skill for shadcn/ui, a web scraping/content comprehension skill, pre-production QA gate skills for both stacks, an integration architecture skill for multi-app monorepos, an operations accountability tracker, a pre-flight environment validator, a senior-engineer PR review gate, and a terminal-only video post-production skill.
 
 ## Skills Overview
 
@@ -33,6 +33,12 @@ A modular set of OpenClaw skills that cover the complete development lifecycle f
 | Skill | Purpose | Frequency |
 |-------|---------|-----------|
 | `web-scraper` | Multi-strategy web scraping with cascade fallback (static/Playwright/Scrapy), news detection, boilerplate removal (trafilatura), metadata extraction, and LLM entity extraction via OpenRouter | On demand |
+
+### Video / Post-Production
+
+| Skill | Purpose | Frequency |
+|-------|---------|-----------|
+| `video-editor` | Terminal-only video post-production — word-level transcription (Whisper), automatic scene clustering and best-take selection, reviewable `edit.json`, frame-accurate ffmpeg cut/concat, candidate color grades + HTML knob playground, speech-synced React overlays (Remotion), Figma MCP design round-trip | On demand |
 
 ### Integration / Multi-App
 
@@ -71,6 +77,11 @@ GCP Stack (alternative — single skill handles all):
 
 Web Scraping Pipeline:
   web-scraper (detect article) → web-scraper (extract content) → web-scraper (clean + metadata) → web-scraper (LLM entities)
+
+Video Post-Production Pipeline (video-editor handles all):
+  video-editor (transcribe word-level) → video-editor (cluster scenes + pick takes → edit.json)
+  → producer reviews edit.json → video-editor (ffmpeg cut → grade candidates → Remotion overlays)
+  → design team iterates in Figma → video-editor (sync via Figma MCP → npx remotion render)
 
 Multi-App Integration (interop-forge handles all):
   interop-forge (monorepo setup) → interop-forge (shared contracts) → interop-forge (OpenAPI specs)
@@ -157,6 +168,9 @@ clawhub install shadcn-theme-default
 
 # Data / Content Extraction
 clawhub install web-scraper
+
+# Video / Post-Production
+clawhub install video-editor
 
 # Integration / Multi-App
 clawhub install interop-forge
@@ -574,6 +588,13 @@ clawhub publish ./preflight-check \
   --name "Preflight Check" \
   --version 1.0.0 \
   --changelog "Initial release: environment validator — binary checks, env var validation, service connectivity, stack-specific profiles"
+
+# 16. Video Editor
+clawhub publish ./video-editor \
+  --slug video-editor \
+  --name "Video Editor" \
+  --version 1.0.0 \
+  --changelog "Initial release: terminal-only post-production — Whisper word-level transcription, scene clustering + take selection, edit.json review gate, ffmpeg cut/concat, candidate grades + LUT packaging, Remotion speech-synced overlays, Figma MCP round-trip"
 ```
 
 ### What Happens After Publishing
@@ -628,8 +649,9 @@ For a team of 2-5 developers:
 - Google Cloud SDK (`gcloud`) — https://cloud.google.com/sdk/docs/install (required for `gcp-fullstack`)
 - Docker — required for Cloud Run container builds (required for `gcp-fullstack`)
 - pnpm — `npm install -g pnpm` (required for `interop-forge` monorepo management)
-- Python 3.10+ with pip (required for `web-scraper`)
+- Python 3.10+ with pip (required for `web-scraper` and `video-editor`)
 - Playwright browsers — installed via `npx playwright install` (required for `web-scraper` JS-rendered pages)
+- ffmpeg 6+ (required for `video-editor`) — `brew install ffmpeg` or `sudo apt install ffmpeg`; Remotion installs per-project via `npx create-video@latest`
 
 ## Integration Testing Between Skills
 
