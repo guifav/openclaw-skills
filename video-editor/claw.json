@@ -1,0 +1,33 @@
+{
+  "name": "video-editor",
+  "version": "1.0.0",
+  "description": "Terminal-only video post-production — word-level transcription (Whisper), automatic scene clustering and best-take selection, reviewable edit-decision JSON, frame-accurate ffmpeg cut/concat, candidate color grades as code/LUTs with an HTML knob playground, speech-synced React overlays via Remotion, and a Figma MCP round-trip for design-team iteration",
+  "author": "guifav",
+  "homepage": "https://github.com/guifav/openclaw-skills",
+  "license": "MIT",
+  "permissions": ["filesystem", "network"],
+  "models": ["claude-*"],
+  "tags": [
+    "video-editing",
+    "post-production",
+    "ffmpeg",
+    "whisper",
+    "transcription",
+    "remotion",
+    "color-grading",
+    "lut",
+    "take-selection",
+    "figma",
+    "react"
+  ],
+  "minOpenClawVersion": "0.5.0",
+  "entry": "SKILL.md",
+  "openclaw": {
+    "requires": {
+      "bins": ["ffmpeg", "python3", "pip", "npx"],
+      "env": []
+    },
+    "emoji": "🎬",
+    "os": ["darwin", "linux", "win32"]
+  }
+}
