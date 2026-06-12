@@ -1,0 +1,21 @@
+{
+  "name": "<skill-name>",
+  "version": "0.1.0",
+  "description": "<One-line summary shown in catalogs and listings.>",
+  "author": "<your-handle>",
+  "homepage": "https://github.com/guifav/openclaw-skills",
+  "license": "MIT",
+  "permissions": ["filesystem"],
+  "models": ["claude-*"],
+  "tags": ["<tag1>", "<tag2>", "<tag3>"],
+  "minOpenClawVersion": "0.5.0",
+  "entry": "SKILL.md",
+  "openclaw": {
+    "requires": {
+      "bins": [],
+      "env": []
+    },
+    "emoji": "🛠️",
+    "os": ["darwin", "linux", "win32"]
+  }
+}

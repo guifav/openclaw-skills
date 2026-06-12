@@ -722,3 +722,21 @@ To validate that skills work correctly together, run these integration test sequ
 ```
 
 These tests should be run manually after significant changes to any skill to ensure compatibility.
+
+## Contributing
+
+Contributions are welcome! Each skill is a self-contained folder following a
+shared structure (`SKILL.md` + `claw.json` + `CHANGELOG.md`).
+
+- Read [CONTRIBUTING.md](./CONTRIBUTING.md) for the repository layout, the
+  anatomy of a skill, the `claw.json` field reference, and the PR process.
+- To start a new skill, copy the [`_template/`](./_template) scaffold:
+  ```bash
+  cp -R _template my-skill
+  ```
+- All participants are expected to follow our
+  [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+## License
+
+Released under the [MIT License](./LICENSE). © 2026 guifav.
